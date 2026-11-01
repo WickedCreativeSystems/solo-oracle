@@ -131,6 +131,7 @@ By hand: copy `main.js`, `manifest.json` and `styles.css` from the latest releas
 
 ## Also from this maker
 
+- [Mapsmith](https://github.com/walkertbrown/mapsmith): towns, regions, dungeons and ships drawn from a seed in your note. Press **Explore** to play one alone: the rooms and streets stay hidden until you walk into them, and each one rolls what you find.
 - [Dice Tray](https://github.com/walkertbrown/dice-tray): rolls dice, random tables and note sections inline, and reads Dice Roller's `dice:` syntax.
 - [Tabletop Clocks](https://github.com/walkertbrown/tabletop-clocks): segmented progress clocks, counters and stopwatches drawn from plain text.
 - [Session Log](https://github.com/walkertbrown/session-log): a quick log for game night. Fights, rolls and clock ticks log themselves.
