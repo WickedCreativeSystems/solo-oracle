@@ -27,7 +27,7 @@ export type ListKind = 'thread' | 'npc' | 'table';
 
 const TENSION = /^\s*tension\s*:?\s*(-?\d+)\s*$/i;
 const SCENE = /^\s*scene\s+(\d+)\s*:?\s*(.*)$/i;
-const ENTRY = /^\s*(thread|npc|table)\s*:\s*(.+?)\s*$/i;
+const ENTRY = /^\s*(thread|npc|table)\s*:\s*(\S.*?)\s*$/i; // a blank entry (`thread: `) is not an entry
 
 export function parseSolo(body: string): Solo {
 	const s: Solo = { tension: TENSION_START, threads: [], npcs: [], tables: [] };

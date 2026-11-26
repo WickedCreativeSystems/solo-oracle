@@ -27,7 +27,7 @@ import {
 import { draw, drawn, cardName, journalCard, shuffle, withCard } from './cards';
 import { expand, hasInnerTable, journalTable, parseTableLink, rollOn, section, type TableLink, type TableRoll } from './tables';
 
-const TEMPLATE = '```solo\ntension 2\nthread: \nnpc: \n```\n';
+const TEMPLATE = '```solo\ntension 2\n```\n'; // threads and people are added from the panel; blank ones were rolled by Pick one
 const OPEN = /^((?:\s*>)*\s*)(`{3,}|~{3,})\s*solo\b/;
 const VIEW = 'solo-oracle-library';
 const DEPTH = 5; // tables rolled inside tables, at most; a table that names itself stops here
@@ -73,7 +73,11 @@ export default class SoloOraclePlugin extends Plugin {
 		this.addCommand({
 			id: 'insert-block',
 			name: 'Insert solo block',
-			editorCallback: (editor: Editor) => editor.replaceSelection(TEMPLATE),
+			editorCallback: (editor: Editor) => {
+				// In a new note the cursor is in the title, and replaceSelection there wrote nothing: put it at the editor's cursor and focus it.
+				editor.focus();
+				editor.replaceRange(TEMPLATE, editor.getCursor());
+			},
 		});
 	}
 
@@ -486,7 +490,7 @@ class Panel extends MarkdownRenderChild {
 		if (!this.plugin.pro) {
 			const hint = box.createDiv({ cls: 'solo-oracle-pro-hint' });
 			hint.appendText('All your tables in one library, imported from text or CSV, rolling tables inside tables: ');
-			hint.createEl('a', { text: 'Solo Oracle Pro', href: BUY });
+			hint.createEl('a', { text: 'Solo Oracle Pro', href: BUY_FROM('panel') });
 		}
 	}
 
@@ -551,7 +555,7 @@ class Library extends ItemView {
 		if (!this.plugin.pro) {
 			el.createDiv({ cls: 'solo-oracle-label', text: 'Table library' });
 			el.createEl('p', { text: 'The table library comes with Solo Oracle Pro: every table in a folder, to search and roll without adding it to a game first. A Pro key goes in Solo Oracle\'s settings.' });
-			el.createEl('a', { text: 'Get Solo Oracle Pro on itch', href: BUY });
+			el.createEl('a', { text: 'Get Solo Oracle Pro on itch', href: BUY_FROM('library') });
 			return;
 		}
 		const where = el.createDiv({ cls: 'solo-oracle-row' });

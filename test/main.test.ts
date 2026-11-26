@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { beforeAll, describe, expect, it } from 'vitest';
 import { App, Modal, Notice, ctx, installDomHelpers, requestUrl } from './obsidian-shim';
-import SoloOraclePlugin, { BUY, SERVER, append } from '../src/main';
+import SoloOraclePlugin, { BUY_FROM, SERVER, append } from '../src/main';
 
 beforeAll(() => installDomHelpers());
 
@@ -169,7 +169,7 @@ describe('tables', () => {
 	it('points to Pro under the tables until Pro is on', async () => {
 		const s = await setup(WITH);
 		s.app.notes.set('Weather.md', { path: 'Weather.md', content: WEATHER });
-		expect(s.el.querySelector('.solo-oracle-pro-hint a')?.getAttribute('href')).toBe(BUY);
+		expect(s.el.querySelector('.solo-oracle-pro-hint a')?.getAttribute('href')).toBe(BUY_FROM('panel'));
 		s.plugin.pro = true;
 		s.button('Coast').click();
 		await new Promise((r) => setTimeout(r, 0));
@@ -308,7 +308,7 @@ describe('the table library', () => {
 	it('says it comes with Pro', async () => {
 		const { lib } = await library(false);
 		expect(lib.textContent).toContain('comes with Solo Oracle Pro');
-		expect(lib.querySelector('a')?.getAttribute('href')).toBe(BUY);
+		expect(lib.querySelector('a')?.getAttribute('href')).toBe(BUY_FROM('library'));
 		expect(lib.querySelector('.solo-oracle-search')).toBeNull();
 	});
 });

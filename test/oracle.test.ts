@@ -26,6 +26,12 @@ const face = (n: number, sides: number) => (n - 0.5) / sides;
 const BODY = 'tension 3\nscene 2: The ferry\nthread: Find my brother\nnpc: Old Marra\nnpc: The Grey Captain\n# a note to self';
 
 describe('reading a solo block', () => {
+	it('skips a blank thread or npc line, so Pick one never lands on it', () => {
+		const s = parseSolo('tension 2\nthread: \nnpc:\nthread: Find my brother');
+		expect(s.threads).toEqual(['Find my brother']);
+		expect(s.npcs).toEqual([]);
+	});
+
 	it('reads tension, scene, threads and NPCs', () => {
 		expect(parseSolo(BODY)).toEqual({
 			tension: 3,

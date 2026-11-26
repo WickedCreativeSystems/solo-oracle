@@ -8,7 +8,7 @@ A solo TTRPG oracle and GM emulator: play tabletop RPGs alone from a note, with 
 
 ## Start a game
 
-Run the command **Insert solo block**, or write one yourself:
+Click into a note, then run the command **Insert solo block**, or write one yourself:
 
 ````
 ```solo
@@ -131,7 +131,7 @@ Solo Oracle has no accounts and collects nothing. It goes online only when you p
 
 From Obsidian: Settings → Community plugins → Browse → search "Solo Oracle".
 
-By hand: copy `main.js`, `manifest.json` and `styles.css` from the latest release into `<your vault>/.obsidian/plugins/solo-oracle/`, then enable it under Community plugins.
+By hand: copy `main.js`, `manifest.json` and `styles.css` from [the latest release](https://github.com/WickedCreativeSystems/solo-oracle/releases/latest) into `<your vault>/.obsidian/plugins/solo-oracle/`. Make the `plugins` and `solo-oracle` folders if they aren't there. `.obsidian` is a hidden folder, so turn on hidden files in your file manager to see it. Then open Settings → Community plugins, press **Turn on community plugins** (or **Exit Restricted mode**) if it shows, press the reload button next to Installed plugins, and switch Solo Oracle on.
 
 ## Also from this maker
 
