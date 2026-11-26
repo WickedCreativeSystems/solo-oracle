@@ -119,6 +119,10 @@ Everything above is free. Solo Oracle Pro is a one-time payment of $6 on itch (h
 
 After you buy, copy your download page's address. Paste it into Solo Oracle's settings under **Pro key** and press **Check**. Pro stays on in that vault from then on. Lost it? Type the email you bought with under **Lost your key?**.
 
+### Ads
+
+**Payment is required for full access** to the four Pro parts above. Without Pro, running one of their commands opens a short note on what Pro adds, with a link to its itch page, and the plugin's settings have the same link. Nothing is loaded from the internet to show them, and a link opens only if you click it.
+
 ## Privacy
 
 Solo Oracle has no accounts and collects nothing. It goes online only when you press **Check** or **Mail my key** in its settings. Check sends the Pro key you pasted to this plugin's server (bulkhead.bananafest-destiny.com), which asks itch whether the key is real; the server keeps a hash of a good key, never the key. Mail my key sends the email you typed to the same server, which asks itch for that address's key and mails it there; it keeps only a hash of the address, so it mails no more than once an hour. Nothing else ever leaves your vault. It only edits the `solo` block it is drawing and adds lines to the end of that note. It reads the notes your `table:` lines link to and never changes them. Importing and exporting write new notes and never change existing ones.

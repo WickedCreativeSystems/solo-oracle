@@ -337,8 +337,10 @@ describe('importing a table', () => {
 		const s = await setup(NOTE);
 		Modal.last = null;
 		s.plugin.importTable();
-		expect(Modal.last).toBeNull();
-		expect(Notice.last).toBe('Importing tables comes with Solo Oracle Pro.');
+		const html = Modal.last!.contentEl.innerHTML;
+		expect(html).toContain('Importing tables comes with Solo Oracle Pro.');
+		expect(html).toContain('/go/oracle-pro/import');
+		expect(html).toContain('$6 once');
 	});
 });
 
@@ -362,8 +364,9 @@ describe('exporting a game', () => {
 
 	it('needs a game open, and Pro', async () => {
 		const s = await setup(NOTE);
+		Modal.last = null;
 		await s.plugin.exportStory();
-		expect(Notice.last).toBe('Exporting a game comes with Solo Oracle Pro.');
+		expect(Modal.last!.contentEl.innerHTML).toContain('/go/oracle-pro/export');
 		s.plugin.pro = true;
 		await s.plugin.exportStory();
 		expect(Notice.last).toBe('Open a note with a solo block first.');

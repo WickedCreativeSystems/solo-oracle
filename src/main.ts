@@ -41,6 +41,8 @@ interface Said {
 
 export const SERVER = 'https://bulkhead.bananafest-destiny.com';
 export const BUY = 'https://bananafestdestiny.itch.io/solo-oracle-pro'; // where Pro is sold; the key check asks the server, not this
+// The same page through the site, so the click is counted; the tail says where it came from (site's _redirects).
+export const BUY_FROM = (where: string) => `https://bulkhead.bananafest-destiny.com/go/oracle-pro/${where}`;
 
 interface Settings {
 	folder: string; // where the library looks for tables; "" is the whole vault
@@ -120,12 +122,12 @@ export default class SoloOraclePlugin extends Plugin {
 	}
 
 	importTable() {
-		if (!this.pro) return void new Notice('Importing tables comes with Solo Oracle Pro.');
+		if (!this.pro) return void new ProModal(this.app, 'Importing tables comes with Solo Oracle Pro.', 'import').open();
 		new ImportModal(this.app, this).open();
 	}
 
 	async exportStory() {
-		if (!this.pro) return void new Notice('Exporting a game comes with Solo Oracle Pro.');
+		if (!this.pro) return void new ProModal(this.app, 'Exporting a game as a story comes with Solo Oracle Pro.', 'export').open();
 		const game = await this.game();
 		if (!game) return void new Notice('Open a note with a solo block first.');
 		new StoryModal(this.app, this, game).open();
@@ -249,7 +251,7 @@ class SoloOracleSettingTab extends PluginSettingTab {
 				name: 'Pro key',
 				desc: 'The address of your itch download page for Solo Oracle Pro, or the key at the end of it. Check asks this plugin\'s server once, and Pro stays on after that, offline too. It is kept in this vault\'s plugin folder.',
 				render: (setting) => {
-					if (!p.pro) setting.descEl.createDiv().createEl('a', { text: 'Get Solo Oracle Pro on itch', href: BUY });
+					if (!p.pro) setting.descEl.createDiv().createEl('a', { text: 'Get Solo Oracle Pro on itch', href: BUY_FROM('settings') });
 					const said = setting.descEl.createDiv({ cls: 'solo-oracle-said' });
 					setting
 						.addText((t) => t.setPlaceholder('Download page address or key').setValue(p.settings.key).onChange(async (v) => {
@@ -651,6 +653,25 @@ class Library extends ItemView {
 }
 
 // Paste a table from a PDF or a spreadsheet, or pick a .csv or .txt file, and it becomes a note in the library folder.
+/** What Pro adds, when a Pro command is run without it (the README's Ads section). */
+class ProModal extends Modal {
+	constructor(app: App, private why: string, private where: string) {
+		super(app);
+	}
+	onOpen() {
+		this.setTitle('Solo Oracle Pro');
+		const { contentEl } = this;
+		contentEl.createEl('p', { text: this.why });
+		contentEl.createEl('p', { text: 'Pro is $6 once, on itch. It adds a table library in a side pane, importing tables from text or CSV, tables that roll other tables, and exporting a game as a story. Everything else stays free.' });
+		const a = contentEl.createEl('a', { text: 'Get Solo Oracle Pro', cls: 'so-pro-link' });
+		a.setAttr('href', BUY_FROM(this.where));
+		contentEl.createEl('p', { cls: 'setting-item-description', text: 'Already bought it? Paste your download page\'s address under Pro key in the plugin settings.' });
+	}
+	onClose() {
+		this.contentEl.empty();
+	}
+}
+
 class ImportModal extends Modal {
 	constructor(app: App, private plugin: SoloOraclePlugin) {
 		super(app);
