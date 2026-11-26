@@ -79,7 +79,9 @@ export default class SoloOraclePlugin extends Plugin {
 				if (!ed) return void new Notice('Open a note first.');
 				ed.focus();
 				const at = ed.getCursor();
-				ed.replaceRange((at.ch > 0 ? '\n' : '') + TEMPLATE, at); // a fence mid-line isn't a block
+				const text = (at.ch > 0 ? '\n' : '') + TEMPLATE; // a fence mid-line isn't a block
+				ed.replaceRange(text, at);
+				ed.setCursor(ed.offsetToPos(ed.posToOffset(at) + text.length)); // after the block, so typing doesn't break its fence
 			},
 		});
 	}
