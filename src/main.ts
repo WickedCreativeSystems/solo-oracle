@@ -1,4 +1,4 @@
-import { App, Editor, ItemView, MarkdownPostProcessorContext, MarkdownRenderChild, Modal, Notice, Plugin, PluginSettingTab, SettingDefinitionItem, TAbstractFile, TFile, WorkspaceLeaf, requestUrl } from 'obsidian';
+import { App, ItemView, MarkdownPostProcessorContext, MarkdownRenderChild, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, SettingDefinitionItem, TAbstractFile, TFile, WorkspaceLeaf, requestUrl } from 'obsidian';
 import { freePath, importTable } from './import';
 import { story, type Rolls } from './story';
 import { STARTER, STARTER_NOTE, withStarter } from './starter';
@@ -73,10 +73,13 @@ export default class SoloOraclePlugin extends Plugin {
 		this.addCommand({
 			id: 'insert-block',
 			name: 'Insert solo block',
-			editorCallback: (editor: Editor) => {
-				// In a new note the cursor is in the title, and replaceSelection there wrote nothing: put it at the editor's cursor and focus it.
-				editor.focus();
-				editor.replaceRange(TEMPLATE, editor.getCursor());
+			// A plain callback: Obsidian doesn't run an editorCallback while a new note's title has focus, so it wrote nothing.
+			callback: () => {
+				const ed = this.app.workspace.getActiveViewOfType(MarkdownView)?.editor;
+				if (!ed) return void new Notice('Open a note first.');
+				ed.focus();
+				const at = ed.getCursor();
+				ed.replaceRange((at.ch > 0 ? '\n' : '') + TEMPLATE, at); // a fence mid-line isn't a block
 			},
 		});
 	}
